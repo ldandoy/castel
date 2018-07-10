@@ -64,10 +64,17 @@ exports.login = function(req, res) {
             } else {
                 // console.log('The solution is: ', results[0].password);
                 if (results.length > 0) {
-                    if (results[0].password == password){
+                    if (results[0].password == password) {
+                        req.session.user = {
+                            id:         results[0].id,
+                            email:      results[0].email,
+                            firstname:  results[0].firstname,
+                            lastname:   results[0].lastname
+                        };
+
                         res.send({
                             "code":     200,
-                            "success":  "login sucessfull"
+                            "user":     req.session.user
                         });
                     } else {
                         res.send({
@@ -85,4 +92,11 @@ exports.login = function(req, res) {
         });
     }
     // res.send('NOT IMPLEMENTED: login page');
+};
+
+exports.me = function(req, res) {
+    res.send({
+        "code":     200,
+        "success":  req.session.user
+    });
 };

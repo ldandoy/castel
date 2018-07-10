@@ -10,4 +10,7 @@ router.post('/register', auth_controller.register);
 // GET request for one BookInstance.
 router.post('/login', auth_controller.login);
 
+// GET request for one BookInstance.
+router.get('/me', auth_controller.me);
+
 module.exports = router;
