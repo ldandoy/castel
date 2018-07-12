@@ -1,18 +1,17 @@
-var connection = require('../db.js');
+// var connection = require('../db.js');
+var userModel = require('../models/userModel');
 
 // Display register page.
 exports.register = function(req, res) {
     if (req.query.email == null && req.query.password == null && req.query.username == null) {
         msg_error = "Email et/ou password et/ou username non rempli"
         console.log("error ocurred", msg_error);
-        res.send({
-            "code":     400,
-            "failed":   msg_error
+        res.status(400).send({
+            "data":   msg_error
         })
     } else {
-
         var today = new Date();
-        var users = {
+        var user = {
             "firstname":    req.query.firstname,
             "lastname":     req.query.lastname,
             "email":        req.query.email,
@@ -22,23 +21,16 @@ exports.register = function(req, res) {
             "updated_at":   today
         }
 
-        connection.query('INSERT INTO users SET ?', users, function (error, results, fields) {
-            if (error) {
-                console.log("error ocurred", error);
-                res.send({
-                    "code":     400,
-                    "failed":   "error ocurred"
-                })
+        userModel.insert(user, function(err, results) {
+            if (err) {
+                throw err;
             } else {
-                console.log('The solution is: ', results);
-                res.send({
-                    "code":     200,
-                    "success":  "user registered sucessfully"
-                });
+                user.id = results.insertId;
+                delete user.password;
+                res.send(user);
             }
         });
     }
-    // res.send('NOT IMPLEMENTED: register page');
 };
 
 // Display login page.
@@ -46,57 +38,45 @@ exports.login = function(req, res) {
     if (req.query.password == null && req.query.username == null) {
         msg_error = "Username et/ou password non rempli"
         console.log("error ocurred", msg_error);
-        res.send({
-            "code":     400,
-            "failed":   msg_error
-        })
+        res.status(400).send({
+            "data" :   msg_error
+        });
     } else {
-        var username = req.query.username;
-        var password = req.query.password;
-        
-        connection.query('SELECT * FROM users WHERE username = ?', [username], function (error, results, fields) {
-            if (error) {
-                // console.log("error ocurred",error);
-                res.send({
-                    "code":     400,
-                    "failed":   "error ocurred"
-                })
-            } else {
-                // console.log('The solution is: ', results[0].password);
-                if (results.length > 0) {
-                    if (results[0].password == password) {
-                        req.session.user = {
-                            id:         results[0].id,
-                            email:      results[0].email,
-                            firstname:  results[0].firstname,
-                            lastname:   results[0].lastname
-                        };
+        data = {
+            username: req.query.username,
+            password: req.query.password
+        }
 
-                        res.send({
-                            "code":     200,
-                            "user":     req.session.user
-                        });
-                    } else {
-                        res.send({
-                            "code":     204,
-                            "success":  "Username and password does not match"
-                        });
-                    }
+        userModel.getUserByLoginAndPassword(data, function(err, results) {
+            if (err) {
+                throw err;
+            } else {
+                if (results.length > 0) {
+                    user = results[0];
+                    delete user.password;
+                    req.session.user = user;
+                    res.send(user);
                 } else {
-                    res.send({
-                        "code":     204,
-                        "success":  "Username and password does not match"
+                    msg_error = "Username and password don't match"
+                    res.status(404).send({
+                        "data" :   msg_error
                     });
                 }
             }
         });
     }
-    // res.send('NOT IMPLEMENTED: login page');
 };
 
 exports.me = function(req, res) {
-    res.send({
-        "code":     200,
-        "success":  req.session.user
-    });
+
+    console.log("session", req.session.user);
+    if (req.session.user === undefined) {
+        msg_error = "Vous n'êtes pas connecté."
+        console.log("error ocurred", msg_error);
+        res.status(400).send({
+            "data" :   msg_error
+        });
+    } else {
+        res.send(req.session.user);
+    }
 };
