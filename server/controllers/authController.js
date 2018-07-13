@@ -1,4 +1,3 @@
-// var connection = require('../db.js');
 var userModel = require('../models/userModel');
 
 // Display register page.
@@ -8,7 +7,7 @@ exports.register = function(req, res) {
         console.log("error ocurred", msg_error);
         res.status(400).send({
             "data":   msg_error
-        })
+        });
     } else {
         var today = new Date();
         var user = {

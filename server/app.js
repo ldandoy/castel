@@ -22,10 +22,12 @@ app.use(function(req, res, next) {
 var pagesRouter = require('./routes/pagesRouter');
 var authRouter = require('./routes/authRouter');
 var usersRouter = require('./routes/usersRouter');
+var castelsRouter = require('./routes/castelsRouter');
 
 app.use('/', pagesRouter);
 app.use('/', authRouter);
 app.use('/users', usersRouter);
+app.use('/castels', castelsRouter);
 
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!')
