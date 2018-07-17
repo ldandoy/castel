@@ -83,6 +83,12 @@
             "schema": {
               "$ref": "#/components/schemas/Badreturn"
             }
+          },
+          "500": {
+            "description": "Database error",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
           }
         }
       }
@@ -123,14 +129,14 @@
               "$ref": "#/components/schemas/Badreturn"
             }
           },
-          "401": {
-            "description": "DB error return",
+          "404": {
+            "description": "Username and password does not match",
             "schema": {
               "$ref": "#/components/schemas/Badreturn"
             }
           },
-          "404": {
-            "description": "Username and password does not match",
+          "500": {
+            "description": "Database error",
             "schema": {
               "$ref": "#/components/schemas/Badreturn"
             }
@@ -148,7 +154,7 @@
               "$ref": "#/components/schemas/User"
             }
           },
-          "404": {
+          "500": {
             "description": "No SESSION",
             "schema": {
               "$ref": "#/components/schemas/Badreturn"
@@ -162,7 +168,10 @@
         "summary": "User list",
         "responses": {
           "200": {
-            "description": "Success response"
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/components/schemas/ArrayOfUsers"
+            }
           }
         }
       }
@@ -181,13 +190,115 @@
         ],
         "responses": {
           "200": {
-            "description": "Success response"
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
           },
           "400": {
-            "description": "Invalid ID supplied"
+            "description": "Invalid ID supplied",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
           },
           "404": {
-            "description": "User not found"
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/castels": {
+      "get": {
+        "summary": "User castels lit",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/components/schemas/ArrayOfCastels"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
+          },
+          "500": {
+            "description": "Database error",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
+          }
+        }
+      }
+    },
+    "/castels": {
+      "get": {
+        "summary": "Castels list",
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/components/schemas/ArrayOfCastels"
+            }
+          },
+          "500": {
+            "description": "Database error",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
+          }
+        }
+      }
+    },
+    "/castels/{castelId}": {
+      "get": {
+        "summary": "castel details",
+        "parameters": [
+          {
+            "name": "castelId",
+            "in": "path",
+            "description": "ID of castel to return",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/components/schemas/Castel"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
+          },
+          "404": {
+            "description": "Castel not found",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
+          },
+          "500": {
+            "description": "Database error",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
           }
         }
       }
@@ -201,6 +312,37 @@
           "data": {
             "type": "string",
             "description": "Error message"
+          }
+        }
+      },
+      "Castel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The castel ID."
+          },
+          "label": {
+            "type": "string",
+            "description": "name of the castel."
+          },
+          "user_id": {
+            "type": "integer",
+            "description": "The user owner ID."
+          },
+          "points": {
+            "type": "integer",
+            "description": "castel developpement point."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The user name."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The user name."
           }
         }
       },
@@ -237,6 +379,18 @@
             "format": "date-time",
             "description": "The user name."
           }
+        }
+      },
+      "ArrayOfUsers": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/User"
+        }
+      },
+      "ArrayOfCastels": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Castel"
         }
       }
     }

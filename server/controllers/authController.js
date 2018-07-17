@@ -22,7 +22,7 @@ exports.register = function(req, res) {
 
         userModel.insert(user, function(err, results) {
             if (err) {
-                throw err;
+                throw res.status(500).send({ "data" :   err });
             } else {
                 user.id = results.insertId;
                 delete user.password;
@@ -48,7 +48,7 @@ exports.login = function(req, res) {
 
         userModel.getUserByLoginAndPassword(data, function(err, results) {
             if (err) {
-                throw err;
+                throw res.status(500).send({ "data" :   err });
             } else {
                 if (results.length > 0) {
                     user = results[0];
@@ -72,7 +72,7 @@ exports.me = function(req, res) {
     if (req.session.user === undefined) {
         msg_error = "Vous n'êtes pas connecté."
         console.log("error ocurred", msg_error);
-        res.status(400).send({
+        res.status(500).send({
             "data" :   msg_error
         });
     } else {

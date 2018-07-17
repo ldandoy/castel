@@ -7,15 +7,22 @@ exports.getAll = function(callback) {
     });
 }
 
+exports.get = function(data, callback) {
+    db.query('SELECT * FROM castels WHERE id = ?', [data.castelId], function (error, rows) {
+        console.log('castel ' + data.castelId + ' found', rows);
+        callback(error, rows);
+    });
+}
+
 exports.getUserCastels = function(data, callback) {
-    db.query('SELECT * FROM castels WHERE user_id = ?', [data.user_id], function (error, rows) {
+    db.query('SELECT * FROM castels WHERE user_id = ?', [data.userId], function (error, rows) {
         console.log('castels found');
         callback(error, rows);
     });
 }
 
 exports.getCastelByUserAndId = function(data, callback) {
-    db.query('SELECT * FROM castels WHERE user_id = ? AND id = ?', [data.user_id, data.id], function (error, rows) {
+    db.query('SELECT * FROM castels WHERE user_id = ? AND id = ?', [data.userId, data.id], function (error, rows) {
         console.log('castel ' + data.id + ' found', rows);
         callback(error, rows);
     });

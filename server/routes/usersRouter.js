@@ -5,12 +5,12 @@ var router = express.Router();
 var users_controller = require('../controllers/usersController');
 
 // GET request list user.
-router.get('/', users_controller.index);
+router.get('/', users_controller.list);
 
 // GET request for one User.
-router.get('/:id', users_controller.get);
+router.get('/:userId', users_controller.get);
 
 // GET request castel liste.
-router.get('/:id/castels', users_controller.getCastels);
+router.get('/:userId/castels', users_controller.getCastels);
 
 module.exports = router;
