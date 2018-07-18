@@ -1,5 +1,4 @@
 var db = require('../db.js');
-var unityModel = require('../models/unityModel');
 
 exports.getAll = function(callback) {
     db.query('SELECT * FROM castels', function (error, rows) {

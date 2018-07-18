@@ -302,6 +302,74 @@
           }
         }
       }
+    },
+    "/castels/{castelId}/buildings": {
+      "get": {
+        "summary": "buildings list for a castel",
+        "parameters": [
+          {
+            "name": "castelId",
+            "in": "path",
+            "description": "ID of castel to list",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/components/schemas/ArrayOfBuildings"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
+          },
+          "500": {
+            "description": "Database error",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
+          }
+        }
+      }
+    },
+    "/castels/{castelId}/unities": {
+      "get": {
+        "summary": "buildings list for a castel",
+        "parameters": [
+          {
+            "name": "castelId",
+            "in": "path",
+            "description": "ID of castel to list",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/components/schemas/ArrayOfUnities"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
+          },
+          "500": {
+            "description": "Database error",
+            "schema": {
+              "$ref": "#/components/schemas/Badreturn"
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -333,6 +401,22 @@
           "points": {
             "type": "integer",
             "description": "castel developpement point."
+          },
+          "wood": {
+            "type": "integer",
+            "description": "The user name."
+          },
+          "gold": {
+            "type": "integer",
+            "description": "The user name."
+          },
+          "stone": {
+            "type": "integer",
+            "description": "The user name."
+          },
+          "pop": {
+            "type": "integer",
+            "description": "The user name."
           },
           "created_at": {
             "type": "string",
@@ -369,6 +453,15 @@
             "type": "string",
             "description": "The user name."
           },
+          "birthday": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The user birthday."
+          },
+          "gender": {
+            "type": "string",
+            "description": "The user gender."
+          },
           "created_at": {
             "type": "string",
             "format": "date-time",
@@ -377,6 +470,80 @@
           "updated_at": {
             "type": "string",
             "format": "date-time",
+            "description": "The user name."
+          }
+        }
+      },
+      "Building": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The building ID."
+          },
+          "level": {
+            "type": "integer",
+            "description": "level of the building."
+          },
+          "label": {
+            "type": "string",
+            "description": "name of the building."
+          },
+          "wood_needed": {
+            "type": "integer",
+            "description": "wood needed."
+          },
+          "gold_needed": {
+            "type": "integer",
+            "description": "gold needed."
+          },
+          "stone_needed": {
+            "type": "integer",
+            "description": "stone needed."
+          },
+          "pop_needed": {
+            "type": "integer",
+            "description": "pop needed."
+          }
+        }
+      },
+      "Unity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The user ID."
+          },
+          "label": {
+            "type": "string",
+            "description": "The user name."
+          },
+          "strength": {
+            "type": "integer",
+            "description": "The user email."
+          },
+          "defense": {
+            "type": "integer",
+            "description": "The user name."
+          },
+          "pop": {
+            "type": "integer",
+            "description": "The user name."
+          },
+          "wood_needed": {
+            "type": "integer",
+            "description": "The user name."
+          },
+          "gold_needed": {
+            "type": "integer",
+            "description": "The user name."
+          },
+          "stone_needed": {
+            "type": "integer",
+            "description": "The user name."
+          },
+          "quantity": {
+            "type": "integer",
             "description": "The user name."
           }
         }
@@ -391,6 +558,18 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/Castel"
+        }
+      },
+      "ArrayOfBuildings": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Building"
+        }
+      },
+      "ArrayOfUnities": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Unity"
         }
       }
     }
