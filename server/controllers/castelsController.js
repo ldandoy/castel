@@ -6,26 +6,7 @@ exports.list = function(req, res) {
         if (err) {
             throw res.status(500).send({ "data" :   err });
         } else {
-            res.send(data.castels);
-            /*for (var i = 0, len = castels.length; i < len; i++) {
-                data = { 
-                    'castelId': castels[i].id,
-                    'castels': castels,
-                    'index': i
-                }
-                console.log("passer", i);
-                unityModel.getByCastelId(data, function(err1, unities) {
-                    if (err1) {
-                        throw res.status(500).send({ "data" :   err1 });
-                    } else {
-                        data.castels[data.index].unities = unities;
-                        console.log("fin", data.index);
-                        if (data.index == (len-1)) {
-                            res.send(data.castels);
-                        }
-                    }
-                });
-            }*/
+            res.send(castels);
         }
     });
 }
